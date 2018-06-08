@@ -44,6 +44,14 @@ ostream& operator <<(ostream& os, const ChessBoard& chessBoard) {
         }
         os << endl;
     }
+    os << "leftDiagonal: ";
+    for (int i = 0; i < chessBoard.squares*2 - 1; i++) {
+        os << " " << chessBoard.leftDiagnoal[i];
+    }
+    os << endl << "rightDiagonal:";
+    for (int i = 0; i < chessBoard.squares*2 - 1; i++) {
+        os << " " << chessBoard.rightDiagnoal[i];
+    }
     return os;
 }
 
@@ -92,7 +100,7 @@ void ChessBoard::putQueen(int row) {
             }
             else {
                 howMany++;
-                cout << *this << endl;
+                cout << *this << endl << endl;
             }
             column[col]  = leftDiagnoal[col + row] = rightDiagnoal[col - row + norm] = available;
         }
