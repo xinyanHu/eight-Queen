@@ -21,6 +21,7 @@ public:
     ChessBoard();
     ChessBoard(int);
     void findSolutions();
+    friend ostream& operator <<(ostream&, const ChessBoard&);
     ~ChessBoard();
 };
 
@@ -30,6 +31,20 @@ ChessBoard::ChessBoard() : squares(8), norm(squares - 1) {
 
 ChessBoard::ChessBoard(int n) : squares(n), norm(squares - 1) {
     initBoard();
+}
+
+ostream& operator <<(ostream& os, const ChessBoard& chessBoard) {
+    for (int i = 0; i < chessBoard.squares; i++) {
+        for (int j = 0; j < chessBoard.squares; j++) {
+            if (j == chessBoard.positionInRow[i]) {
+                os << " *";
+            }
+            else
+                os << " -";
+        }
+        os << endl;
+    }
+    return os;
 }
 
 ChessBoard::~ChessBoard() {
@@ -70,13 +85,14 @@ void ChessBoard::putQueen(int row) {
         if (column[col] == available &&
             leftDiagnoal[col + row] == available &&
             rightDiagnoal[col - row + norm] == available) {
-            positionInRow[col] = col;
+            positionInRow[row] = col;
             column[col]  = leftDiagnoal[col + row] = rightDiagnoal[col - row + norm] = !available;
             if (row < squares - 1) {
                 putQueen(row + 1);
             }
             else {
                 howMany++;
+                cout << *this << endl;
             }
             column[col]  = leftDiagnoal[col + row] = rightDiagnoal[col - row + norm] = available;
         }
@@ -85,10 +101,10 @@ void ChessBoard::putQueen(int row) {
 
 void ChessBoard::findSolutions() {
     putQueen(0);
-    cout << "solutions: " << howMany << endl;
+    cout << "queens: " << squares <<"\tsolutions: " << howMany << endl;
 }
 int main(int argc, const char * argv[]) {
-    ChessBoard board(13);
+    ChessBoard board(8);
     board.findSolutions();
     board.~ChessBoard();
     return 0;
